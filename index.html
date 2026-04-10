@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taboo - SCIPHER.GG Clone</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <header class="top-bar">
+            <div class="logo">SCIPHER <span>TABOO</span></div>
+            <div class="stats">
+                <div class="stat-box team-score">Team 1: <span id="score1">0</span></div>
+                <div class="stat-box team-score">Team 2: <span id="score2">0</span></div>
+                <div class="stat-box timer-box">
+                    <div>Time: <span id="timer">90</span>s</div>
+                    <div class="timer-bar-bg"><div id="timer-bar"></div></div>
+                </div>
+            </div>
+            <div class="action-buttons" style="width: 130px; display: flex; justify-content: flex-end;">
+                <button id="end-test-btn" class="btn" style="background-color: var(--color-missed); color: white; display: none;">End Test</button>
+            </div>
+        </header>
+
+        <main id="game-board" class="dashboard">
+            <div id="cards-wrapper" class="cards-container">
+                <div id="card-grid" class="grid"></div>
+            </div>
+            <aside id="contributions-wrapper" class="contributions-panel">
+                <h3>Contributions Feed</h3>
+                <ul id="feed-list" class="feed"></ul>
+            </aside>
+        </main>
+
+        <footer id="input-area" class="input-area disabled">
+            <input type="text" id="guess-input" placeholder="Type your guess here and press Enter..." disabled autocomplete="off">
+        </footer>
+
+        <div id="summary-modal" class="modal hidden">
+            <div class="modal-content">
+                <h2>Round Over!</h2>
+                <h3 class="final-score">Total Score: <span id="final-score-val">0</span></h3>
+                <div class="table-container">
+                    <table id="summary-table">
+                        <thead>
+                            <tr>
+                                <th>Word</th>
+                                <th>Points</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="summary-body"></tbody>
+                    </table>
+                </div>
+                <button id="restart-btn" class="btn primary-btn">Play Again</button>
+            </div>
+        </div>
+
+        <div id="lobby-modal" class="modal">
+            <div class="modal-content lobby-content">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h2 style="margin: 0;">Game Lobby</h2>
+                    <button id="invite-btn" class="btn" style="background-color: var(--accent-secondary); color: white;">Copy Invite Link</button>
+                </div>
+                <div class="name-input">
+                    <input type="text" id="player-name" placeholder="Enter your nickname..." autocomplete="off">
+                    <button id="save-name-btn" class="btn primary-btn">Save Name</button>
+                </div>
+                <div class="teams-container">
+                    <div class="team-box">
+                        <h3>Team 1 (<span id="t1-count">0</span>/4)</h3>
+                        <ul id="team-1-list" class="player-list"></ul>
+                        <div class="team-actions">
+                            <button class="btn" onclick="socket.emit('joinTeam', 1, 'guesser')">Join as Guesser</button>
+                            <button class="btn primary-btn" onclick="socket.emit('joinTeam', 1, 'describer')">Join as Describer</button>
+                        </div>
+                        <button class="btn primary-btn start-round-btn" onclick="socket.emit('startRound', 1)">Start Round for Team 1</button>
+                    </div>
+                    <div class="team-box">
+                        <h3>Team 2 (<span id="t2-count">0</span>/4)</h3>
+                        <ul id="team-2-list" class="player-list"></ul>
+                        <div class="team-actions">
+                            <button class="btn" onclick="socket.emit('joinTeam', 2, 'guesser')">Join as Guesser</button>
+                            <button class="btn primary-btn" onclick="socket.emit('joinTeam', 2, 'describer')">Join as Describer</button>
+                        </div>
+                        <button class="btn primary-btn start-round-btn" onclick="socket.emit('startRound', 2)">Start Round for Team 2</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
